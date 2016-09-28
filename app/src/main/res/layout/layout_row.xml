@@ -13,7 +13,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/trabajo" />
 
-    <LinearLayoutLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
@@ -28,11 +28,15 @@
             android:layout_height="wrap_content"
             android:id="@+id/precio" />
 
-        <ImageView android:id="@+id/banderaPais" />
+        <ImageView
+            android:id="@+id/banderaPais"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            />
 
-    </LinearLayoutLayout>
+    </LinearLayout>
 
-    <LinearLayoutLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
@@ -49,6 +53,6 @@
             android:clickable="false"
             android:id="@+id/checkBox" />
 
-    </LinearLayoutLayout>
+    </LinearLayout>
 
 </LinearLayout>
