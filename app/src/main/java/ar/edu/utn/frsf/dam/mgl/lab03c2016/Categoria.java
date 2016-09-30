@@ -47,6 +47,9 @@ public class Categoria implements Serializable {
         this.trabajos.add(t);
     }
 
+    public String toString(){
+        return descripcion;
+    }
     public static final Categoria[] CATEGORIAS_MOCK= new Categoria[]{
             new Categoria(1,"Arquitecto"),
             new Categoria(2,"Desarrollador"),

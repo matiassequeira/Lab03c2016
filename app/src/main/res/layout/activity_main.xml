@@ -10,12 +10,12 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="ar.edu.utn.frsf.dam.mgl.lab03c2016.MainActivity">
 
-    <android.support.v7.widget.Toolbar
-        android:id="@+id/toolbar"
-        android:minHeight="?attr/actionBarSize"
+    <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-    </android.support.v7.widget.Toolbar>
+        android:layout_height="wrap_content"
+        android:theme="@style/AppTheme">
+
+    </android.support.design.widget.AppBarLayout>
 
     <ListView
         android:layout_width="match_parent"

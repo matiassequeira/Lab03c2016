@@ -1,11 +1,14 @@
 package ar.edu.utn.frsf.dam.mgl.lab03c2016;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.format.DateFormat;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -27,15 +30,11 @@ import java.util.Date;
 import java.util.List;
 import java.util.Random;
 
-public class MainActivity extends AppCompatActivity implements AdapterView.OnItemLongClickListener {
+public class MainActivity extends AppCompatActivity implements View.OnCreateContextMenuListener {
 
     private List<Trabajo> trabajos;
     private ListView lvTrabajos;
-    /**
-     * ATTENTION: This was auto-generated to implement the App Indexing API.
-     * See https://g.co/AppIndexing/AndroidStudio for more information.
-     */
-    private GoogleApiClient client;
+    Adaptador adaptador;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,64 +45,35 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
         trabajos = Arrays.asList(Trabajo.TRABAJOS_MOCK);
 
-        Adaptador adaptador = new Adaptador(this, trabajos);
+        adaptador = new Adaptador(this, trabajos);
 
         lvTrabajos.setAdapter(adaptador);
-        lvTrabajos.setOnItemLongClickListener(this);
 
-        // ATTENTION: This was auto-generated to implement the App Indexing API.
-        // See https://g.co/AppIndexing/AndroidStudio for more information.
-        client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
     }
 
-    @Override
-    public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-        Toast.makeText(this, "Selecciono el trabajo: " + trabajos.get(position).getDescripcion(), Toast.LENGTH_SHORT).show();
+    @Override public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menuprincipal, menu);
+
+        return true;
+    }
+
+    @Override public boolean onOptionsItemSelected(MenuItem item) {
+        if(item.getItemId() == R.id.crearOferta) {
+            Intent i = new Intent(this, NuevaOferta.class);
+            startActivityForResult(i, 0);
+            return true;
+        }
         return false;
     }
 
-    @Override
-    public void onStart() {
-        super.onStart();
+    @Override protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        Trabajo res = (Trabajo)data.getSerializableExtra("resultado");
+        trabajos.add(res);
+        adaptador.notifyDataSetChanged();
 
-        // ATTENTION: This was auto-generated to implement the App Indexing API.
-        // See https://g.co/AppIndexing/AndroidStudio for more information.
-        client.connect();
-        Action viewAction = Action.newAction(
-                Action.TYPE_VIEW, // TODO: choose an action type.
-                "Main Page", // TODO: Define a title for the content shown.
-                // TODO: If you have web page content that matches this app activity's content,
-                // make sure this auto-generated web page URL is correct.
-                // Otherwise, set the URL to null.
-                Uri.parse("http://host/path"),
-                // TODO: Make sure this auto-generated app URL is correct.
-                Uri.parse("android-app://ar.edu.utn.frsf.dam.mgl.lab03c2016/http/host/path")
-        );
-        AppIndex.AppIndexApi.start(client, viewAction);
     }
 
-    @Override
-    public void onStop() {
-        super.onStop();
-
-        // ATTENTION: This was auto-generated to implement the App Indexing API.
-        // See https://g.co/AppIndexing/AndroidStudio for more information.
-        Action viewAction = Action.newAction(
-                Action.TYPE_VIEW, // TODO: choose an action type.
-                "Main Page", // TODO: Define a title for the content shown.
-                // TODO: If you have web page content that matches this app activity's content,
-                // make sure this auto-generated web page URL is correct.
-                // Otherwise, set the URL to null.
-                Uri.parse("http://host/path"),
-                // TODO: Make sure this auto-generated app URL is correct.
-                Uri.parse("android-app://ar.edu.utn.frsf.dam.mgl.lab03c2016/http/host/path")
-        );
-        AppIndex.AppIndexApi.end(client, viewAction);
-        client.disconnect();
-    }
-
-
-    public class Adaptador extends BaseAdapter {
+    public class Adaptador extends BaseAdapter implements View.OnLongClickListener{
         LayoutInflater inflador;
         Context context;
         List<Trabajo> ofertas;
@@ -144,6 +114,8 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                 row.setTag(holder);
             }
 
+            row.setOnLongClickListener(this);
+
             holder.puesto.setText(ofertas.get(position).getCategoria().getDescripcion());
             holder.trabajo.setText(ofertas.get(position).getDescripcion());
 
@@ -172,6 +144,15 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
             return row;
         }
+
+        @Override
+        public boolean onLongClick(View v) {
+
+            ViewHolder vH= (ViewHolder) v.getTag();
+
+            Toast.makeText(v.getContext(), "Selecciono el trabajo: " + vH.trabajo.getText() , Toast.LENGTH_SHORT).show();
+            return false;
+        }
     }
 
     class ViewHolder {
@@ -193,4 +174,6 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             ingles = (CheckBox) row.findViewById(R.id.checkBox);
         }
     }
+
+
 }
