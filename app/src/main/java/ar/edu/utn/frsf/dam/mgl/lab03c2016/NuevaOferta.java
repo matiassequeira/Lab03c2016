@@ -26,6 +26,7 @@ public class NuevaOferta extends AppCompatActivity implements View.OnClickListen
     String oferta;
     RadioGroup rdGroup;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,7 +40,11 @@ public class NuevaOferta extends AppCompatActivity implements View.OnClickListen
 
     private void llenarspinner() {
         List<Categoria> categorias = Arrays.asList(Categoria.CATEGORIAS_MOCK);
-        ArrayAdapter<Categoria> adaptadorEspiner = new ArrayAdapter<Categoria>(this, android.R.layout.simple_spinner_item, categorias);
+        List<String> string = new ArrayList<>();
+        for (Categoria cat: categorias ) {
+            string.add(cat.toString());
+        }
+        ArrayAdapter<String> adaptadorEspiner = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, string);
 
         adaptadorEspiner.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         espiner= (Spinner) findViewById(R.id.spinner);

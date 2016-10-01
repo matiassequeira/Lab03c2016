@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical"
     tools:context="ar.edu.utn.frsf.dam.mgl.lab03c2016.NuevaOferta">
 
 
@@ -19,7 +18,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/TextOfertaIngresada"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentStart="true"
+        android:layout_below="@id/TextView"/>
 
     <TextView
         android:layout_width="wrap_content"
@@ -27,24 +27,16 @@
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:text="Seleccione categoria"
         android:id="@+id/TextViewCategoria"
-        android:layout_marginTop="20px"/>
-
-    <Spinner
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/spinnerHorario"
-        android:layout_below="@+id/textHorario"
-        android:layout_alignParentStart="true"
-        android:layout_alignEnd="@+id/textHorario"
-        android:spinnerMode="dropdown" />
-
+        android:layout_marginTop="20px"
+        android:layout_below="@id/TextOfertaIngresada"/>
 
     <Spinner
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/spinner"
         android:layout_marginTop="20px"
-        android:spinnerMode="dropdown"/>
+        android:spinnerMode="dropdown"
+        android:layout_below="@id/TextViewCategoria"/>
 
     <TextView
         android:layout_width="wrap_content"
@@ -52,13 +44,15 @@
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:text="Moneda de pago"
         android:id="@+id/TextViewMoneda"
-        android:layout_marginTop="20px"/>
+        android:layout_marginTop="20px"
+        android:layout_below="@id/spinner"/>
 
     <RadioGroup
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="30px"
-        android:id="@+id/rdGroup">
+        android:id="@+id/rdGroup"
+        android:layout_below="@id/TextViewMoneda">
 
         <RadioButton
             android:layout_width="wrap_content"
@@ -103,6 +97,7 @@
         android:layout_height="wrap_content"
         android:text="GUARDAR"
         android:id="@+id/btn_guardar"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/rdGroup"/>
 
-</LinearLayout>
+</RelativeLayout>
