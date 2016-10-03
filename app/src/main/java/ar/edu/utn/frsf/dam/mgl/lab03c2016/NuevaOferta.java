@@ -106,6 +106,7 @@ public class NuevaOferta extends AppCompatActivity implements View.OnClickListen
 
         espiner.setSelection(savedInstanceState.getInt("espiner"));
 
+
         RadioButton radioButton = (RadioButton) findViewById(savedInstanceState.getInt("rdChecked"));
         radioButton.setSelected(true);
     }
