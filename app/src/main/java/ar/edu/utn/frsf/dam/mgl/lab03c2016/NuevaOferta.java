@@ -7,15 +7,17 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class NuevaOferta extends AppCompatActivity implements View.OnClickListener{
+public class NuevaOferta extends AppCompatActivity implements View.OnClickListener, Serializable {
 
     private Spinner espiner;
     Button btnGuardar;
@@ -32,17 +34,14 @@ public class NuevaOferta extends AppCompatActivity implements View.OnClickListen
         llenarspinner();
 
         txtOferta = (EditText) findViewById(R.id.TextOfertaIngresada);
+        rdGroup = (RadioGroup) findViewById(R.id.rdGroup);
         btnGuardar = (Button) findViewById(R.id.btnGuardar);
         btnGuardar.setOnClickListener(this);
     }
 
     private void llenarspinner() {
         List<Categoria> categorias = Arrays.asList(Categoria.CATEGORIAS_MOCK);
-        List<String> string = new ArrayList<>();
-        for (Categoria cat: categorias ) {
-            string.add(cat.toString());
-        }
-        ArrayAdapter<String> adaptadorEspiner = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, string);
+        ArrayAdapter<Categoria> adaptadorEspiner = new ArrayAdapter<Categoria>(this, android.R.layout.simple_spinner_item, categorias);
 
         adaptadorEspiner.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         espiner= (Spinner) findViewById(R.id.spinnerCategoria);
@@ -51,10 +50,9 @@ public class NuevaOferta extends AppCompatActivity implements View.OnClickListen
 
     @Override
     public void onClick(View v) {
-        oferta = txtOferta.toString();
+        oferta = txtOferta.getText().toString();
 
         Categoria categoria= (Categoria) espiner.getSelectedItem();
-        rdGroup = (RadioGroup) findViewById(R.id.rdGroup);
 
         if(oferta.equals("") || categoria==null ){
             Toast.makeText(v.getContext(), "Falta completar algún campo" , Toast.LENGTH_SHORT).show();
@@ -94,10 +92,10 @@ public class NuevaOferta extends AppCompatActivity implements View.OnClickListen
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        outState.putString("oferta",txtOferta.toString());
+        outState.putString("oferta",txtOferta.getText().toString());
         outState.putInt("espiner",espiner.getSelectedItemPosition());
-        outState.putInt("rdGroup", rdGroup.getCheckedRadioButtonId());
+        outState.putInt("rdChecked", rdGroup.getCheckedRadioButtonId());
+        super.onSaveInstanceState(outState);
     }
 
     @Override
@@ -108,6 +106,7 @@ public class NuevaOferta extends AppCompatActivity implements View.OnClickListen
 
         espiner.setSelection(savedInstanceState.getInt("espiner"));
 
-        rdGroup.getChildAt(savedInstanceState.getInt("rdGroup")).setSelected(true);
+        RadioButton radioButton = (RadioButton) findViewById(savedInstanceState.getInt("rdChecked"));
+        radioButton.setSelected(true);
     }
 }

@@ -6,8 +6,10 @@ import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.format.DateFormat;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,16 +27,18 @@ import com.google.android.gms.common.api.GoogleApiClient;
 
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Random;
 
-public class MainActivity extends AppCompatActivity implements View.OnCreateContextMenuListener {
+public class MainActivity extends AppCompatActivity implements View.OnCreateContextMenuListener, Serializable {
 
     private List<Trabajo> trabajos;
     private ListView lvTrabajos;
     Adaptador adaptador;
+    View filaCompartir;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,7 +47,7 @@ public class MainActivity extends AppCompatActivity implements View.OnCreateCont
 
         lvTrabajos = (ListView) findViewById(R.id.lvTrabajos);
 
-        trabajos = Arrays.asList(Trabajo.TRABAJOS_MOCK);
+        trabajos = new ArrayList(Arrays.asList(Trabajo.TRABAJOS_MOCK));
 
         adaptador = new Adaptador(this, trabajos);
 
@@ -63,7 +67,44 @@ public class MainActivity extends AppCompatActivity implements View.OnCreateCont
             startActivityForResult(i, 0);
             return true;
         }
-        return false;
+        return true;
+    }
+
+    @Override
+    public void onCreateContextMenu (ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuinfo){
+        super.onCreateContextMenu(menu, v, menuinfo);
+
+        filaCompartir=v;
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_contextual, menu);
+    }
+
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+        //AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+        //View view = info.targetView;
+        switch (item.getItemId()) {
+            case R.id.postularse:
+                Toast.makeText(this, "Se ha registrado su postulacion", Toast.LENGTH_SHORT).show();
+                return true;
+            case R.id.compartir:
+                //un intent implicita
+
+                ViewHolder vH= (ViewHolder) filaCompartir.getTag();
+                Intent sendIntent = new Intent();
+                sendIntent.setAction(Intent.ACTION_SEND);
+                sendIntent.putExtra(Intent.EXTRA_TEXT, "Perfil requerido: "+vH.puesto.getText().toString()+
+                                                        "\nLugar: " + vH.trabajo.getText().toString()+
+                                                        "\n"+vH.horas.getText().toString()+
+                                                        vH.precio.getText().toString()+
+                                                        "\n"+vH.fechaFin.getText().toString()
+                        );
+                sendIntent.setType("text/plain");
+                startActivity(Intent.createChooser(sendIntent,"Compartir"));
+                return true;
+            default:
+                return super.onContextItemSelected(item);
+        }
     }
 
     @Override protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -73,7 +114,7 @@ public class MainActivity extends AppCompatActivity implements View.OnCreateCont
 
     }
 
-    public class Adaptador extends BaseAdapter implements View.OnLongClickListener{
+    public class Adaptador extends BaseAdapter{
         LayoutInflater inflador;
         Context context;
         List<Trabajo> ofertas;
@@ -114,7 +155,8 @@ public class MainActivity extends AppCompatActivity implements View.OnCreateCont
                 row.setTag(holder);
             }
 
-            row.setOnLongClickListener(this);
+            //row.setOnLongClickListener(this);
+            registerForContextMenu(row);
 
             holder.puesto.setText(ofertas.get(position).getCategoria().getDescripcion());
             holder.trabajo.setText(ofertas.get(position).getDescripcion());
@@ -145,14 +187,16 @@ public class MainActivity extends AppCompatActivity implements View.OnCreateCont
             return row;
         }
 
-        @Override
+       /* @Override
         public boolean onLongClick(View v) {
 
             ViewHolder vH= (ViewHolder) v.getTag();
 
-            Toast.makeText(v.getContext(), "Selecciono el trabajo: " + vH.trabajo.getText() , Toast.LENGTH_SHORT).show();
+            //Toast.makeText(v.getContext(), "Selecciono el trabajo: " + vH.trabajo.getText() , Toast.LENGTH_SHORT).show();
             return false;
-        }
+        }*/
+
+
     }
 
     class ViewHolder {

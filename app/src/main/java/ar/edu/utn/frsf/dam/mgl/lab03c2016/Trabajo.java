@@ -20,6 +20,7 @@ public class Trabajo implements Serializable{
 
     public Trabajo(){
         Random r =new Random();
+        this.id = 20+r.nextInt(100);
         this.monedaPago=1+r.nextInt(4);
         this.requiereIngles=r.nextInt()%2==0;
         Integer dias = (7+r.nextInt(35));
