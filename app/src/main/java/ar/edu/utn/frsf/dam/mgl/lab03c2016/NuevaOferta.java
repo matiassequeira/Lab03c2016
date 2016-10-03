@@ -4,14 +4,11 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Adapter;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -30,11 +27,12 @@ public class NuevaOferta extends AppCompatActivity implements View.OnClickListen
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_nueva_oferta);
+        setContentView(R.layout.layout_nueva_oferta);
 
         llenarspinner();
 
         txtOferta = (EditText) findViewById(R.id.TextOfertaIngresada);
+        btnGuardar = (Button) findViewById(R.id.btnGuardar);
         btnGuardar.setOnClickListener(this);
     }
 
@@ -47,7 +45,7 @@ public class NuevaOferta extends AppCompatActivity implements View.OnClickListen
         ArrayAdapter<String> adaptadorEspiner = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, string);
 
         adaptadorEspiner.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        espiner= (Spinner) findViewById(R.id.spinner);
+        espiner= (Spinner) findViewById(R.id.spinnerCategoria);
         espiner.setAdapter(adaptadorEspiner);
     }
 
